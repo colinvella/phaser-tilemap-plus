@@ -1,0 +1,45 @@
+{
+  "name": "phaser-tilemap-plus",
+  "version": "0.1.0",
+  "description": "Tilemap animations, physics, events and custom property enhancements for Tiled JSON map files",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack -p",
+    "test": "mocha --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/colinvella/phaser-tilemap-plus.git"
+  },
+  "keywords": [
+    "phaser",
+    "tiled",
+    "tilemap",
+    "animation",
+    "physics",
+    "events",
+    "properties",
+    "game"
+  ],
+  "author": "Colin Vella <colinvella@gmail.com> (https://github.com/colinvella)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/colinvella/phaser-tilemap-plus/issues"
+  },
+  "homepage": "https://github.com/colinvella/phaser-tilemap-plus#readme",
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "phaser-ce": "^2.9.1",
+    "poly-decomp": "^0.2.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-es2015": "^6.24.1",
+    "chai": "^4.1.2",
+    "expose-loader": "^0.7.3",
+    "mocha": "^4.0.1",
+    "webpack": "^3.7.1",
+    "webpack-dev-server": "^2.9.1"
+  }
+}
