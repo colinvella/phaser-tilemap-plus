@@ -23,6 +23,13 @@ describe("Vector", () => {
         expect(vector.y).to.equal(y);
     });
 
+    it("should clone", () => {
+        const clone = vector.clone();
+        expect(clone).to.not.equal(vector);
+        expect(clone.x).to.equal(x);
+        expect(clone.y).to.equal(y);
+    });
+
     it("should compute vector addition", () => {
         const result = Vector.sum(vector, vector2);
         expect(result.x).to.equal(x + x2);

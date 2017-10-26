@@ -1,7 +1,6 @@
 export default class Range {
     constructor() {
-        this.min = Number.POSITIVE_INFINITY;
-        this.max = Number.NEGATIVE_INFINITY;
+        this.makeEmpty();
     }
 
     extendTo(point) {
@@ -25,6 +24,11 @@ export default class Range {
         return this.min > this.max;
     }
 
+    makeEmpty() {
+        this.min = Number.POSITIVE_INFINITY;
+        this.max = Number.NEGATIVE_INFINITY;
+    }
+
     length() {
         if (this.min > this.max) {
             return Number.NaN;
@@ -36,6 +40,9 @@ export default class Range {
         const range = new Range();
         range.min = Math.max(r1.min, r2.min);
         range.max = Math.min(r1.max, r2.max);
+        if (range.min > range.max) {
+            range.makeEmpty();
+        }
         return range;
     }
 
