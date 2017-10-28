@@ -6,7 +6,6 @@ export default class Physics {
     constructor(tilemapJson) {
         this.tilemapJson = tilemapJson;
         this.shapes = [];
-        this.gravity = new Vector(0, 1000); // assume fixed for now
     }
 
     enableObjectLayer(objectLayerName) {
@@ -35,6 +34,9 @@ export default class Physics {
 
     collideWith(sprite) {
         const body = sprite.body;
+        const gravity = sprite.game.physics.arcade.gravity;
+        const gravityVector = new Vector(gravity.x, gravity.y);
+        const gravityNormal = gravityVector.normalized();
         
         if (!body.contactNormal) {
             body.contactNormal = new Vector();            
@@ -78,6 +80,9 @@ export default class Physics {
 
                 body.velocity.x = newVelocity.x;
                 body.velocity.y = newVelocity.y;
+
+                body.x -= gravityNormal.x;
+                body.y -= gravityNormal.y;
             }
         }
         body.contactNormal = body.contactNormal.normalized();
