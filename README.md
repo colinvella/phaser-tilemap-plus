@@ -53,29 +53,21 @@ or
   this.game.plugins.add(Phaser.Plugin.TilemapPlus); // ES6 if create() is a method override
 ```
 
+Load the tilemap and corresponding tilemap layers as you normally would. The plugin will transparently enhance the tilemap to
+support the additional features.
+
 *NOTE:* In general, the difference between ES5 and ES6 code is that in ES6, the `game` object is a property of the game state object and must be prefixed by `this`. The next examples will quote only ES5 code for the sake of brevity.
 
-# Load Tilemap
-Within your `preload()` function or method, replace the call to `load.tilemap` with `load.tilemapPlus`
-```js
-game.load.tilemapPlus('tileMap', 'path-to/tilemap.json', null, Phaser.Tilemap.TILED_JSON);
-```
-
-# Add Tilemap
-Within your `create()` function or method (after loading the plugin if in the same game state), replace the call to `add.tilemap` with `add.tilemapPlus`
-```js
-game.tilemap = this.add.tilemapPlus('tileMap');
-```
-
 # Enable Tile Animations
-If you have defined tile animations within Tiled prior to exporting the map to JSON format, you can enable them like this:
+If you have defined tile animations within Tiled prior to exporting the map to JSON format, you can enable them adding the following
+code after adding the tilemap and corresponding tilemap layers in your `create()` function:
 ```js
 game.tilemap.plus.animation.enable();
 ```
 Animations can be disabled by calling `tilemap.plus.animation.disable()`.
 
 # Enable Physics
-You can add an object layer to your Tiled map and add polygons and rectangles to define collidable boundaries in your map, independent of the tiles used. This allows the use of sloped floors, walls and ceilings, against which sprites can interact accordingly, such as sliding down. Object later based collision also allows the implementation of hidden passages and platforms.
+You can add an object layer to your Tiled map and add polygons and rectangles to define collidable boundaries in your map, independently from the tiles used. This allows the use of sloped or curved floors, walls and ceilings, against which sprites can interact accordingly, such as sliding down. Object layer based collision also allows the implementation of hidden passages and platforms.
 
 To enable collision against an object layer, call the `enableObjectLayer` method, passing in the name of the object layer within the map, like this:
 ```js
@@ -87,7 +79,7 @@ To collide sprites against the map, call the following in your `update()` method
 game.tilemap.plus.physics.collideWith(sprite);
 ```
 
-Whenever a sprite is touching the collision layer, it's body will have contactNormal `Vector` indicating the direction away from the contact surface. This can be used to determine when and in what direction to jump off the surface.
+Whenever a sprite is touching the collision layer, its body will have contactNormal `Vector` indicating the direction away from the contact surfaces. This can be used to determine when and in what direction to jump off the surface.
 
 # Custom Properties
 
