@@ -6,8 +6,7 @@
   "scripts": {
     "build": "webpack -p",
     "dev": "webpack -d",
-    "test": "mocha --require babel-register tests/*.js --reporter spec",
-    "cover": "node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R spec test/*"
+    "test": "mocha --require babel-register tests/*.js --reporter spec"
   },
   "repository": {
     "type": "git",
