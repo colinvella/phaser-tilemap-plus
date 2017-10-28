@@ -5,6 +5,7 @@
   "main": "dist/phaser-tilemap-plus.js",
   "scripts": {
     "build": "webpack -p",
+    "dev": "webpack -d",
     "test": "mocha --require babel-register tests/*.js --reporter spec"
   },
   "repository": {

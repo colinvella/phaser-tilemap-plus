@@ -35,15 +35,18 @@ export default class Physics {
 
     collideWith(sprite) {
         const body = sprite.body;
-
-        body.contactNormal = {x: 0, y: 0};
+        
+        if (!body.contactNormal) {
+            body.contactNormal = new Vector();            
+        }
+        body.contactNormal.x = body.contactNormal.y = 0;
         for (const shape of this.shapes) {
             const collision = shape.collideWidth(body);
             const velocity = body.velocity;
             if (collision) {
                 const penetration = collision.penetration;
                 const normal = collision.normal;
-                body.contactNormal = normal;
+                body.contactNormal = Vector.sum(body.contactNormal, normal);
                 
                 // resolve penetration
                 body.x -= penetration.x;
@@ -77,6 +80,7 @@ export default class Physics {
                 body.velocity.y = newVelocity.y;
             }
         }
+        body.contactNormal = body.contactNormal.normalized();
     }
 
     addRectangle(objectJson) {
