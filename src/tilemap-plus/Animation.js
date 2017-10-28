@@ -31,15 +31,20 @@ export default class TilemapPlusAnimation {
 
 
 function _addAnimationsFromTileset(tilesetJson) {
-    for (const tileJson of Object.values(tilesetJson.tiles)) {
+    const tilesJson = tilesetJson.tiles;
+    if (!tilesJson) {
+        return;
+    }
+    for (const animatedTileId of Object.keys(tilesJson)) {
+        const tileJson = tilesJson[animatedTileId];
         const animationJson = tileJson.animation;
         if (animationJson && animationJson.length > 0) {
-            _addAnimationsFromAnimatedTile.bind(this)(tilesetJson, animationJson);
+            _addAnimationsFromAnimatedTile.bind(this)(tilesetJson, animatedTileId, animationJson);
         }
     }
 }
 
-function _addAnimationsFromAnimatedTile(tilesetJson, animationJson) {
+function _addAnimationsFromAnimatedTile(tilesetJson, animatedTileId, animationJson) {
     const tiles = animationJson.map(animationJson => animationJson.tileid);
     
     const frameInterval = animationJson.find(() => true).duration;
@@ -49,7 +54,7 @@ function _addAnimationsFromAnimatedTile(tilesetJson, animationJson) {
         tiles,
         frameInterval,
         tileset,
-        tileLocations: _getTileLocations.bind(this)(tiles),
+        tileLocations: _getTileLocations.bind(this)(tileset.firstgid + parseInt(animatedTileId)),
         currentFrame: 0,
     };        
 
@@ -85,7 +90,7 @@ function _animate() {
     }
 }
 
-function _getTileLocations(tiles) {
+function _getTileLocations(animatedTileId) {
     const tileLocations = [];
     for (const layerJson of this.tilemapJson.layers) {
         if (layerJson.type !== "tilelayer") {
@@ -96,7 +101,7 @@ function _getTileLocations(tiles) {
         const height = layerJson.height;
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
-                if (tiles.includes(data[y * width + x] - 1)) {
+                if (data[y * width + x] === animatedTileId) {
                     tileLocations.push({x, y, layer: layerJson.name});
                 }
             }
