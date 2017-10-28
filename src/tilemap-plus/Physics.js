@@ -92,6 +92,15 @@ export default class Physics {
         // convert to convex polygon
         const width = objectJson.width;
         const height = objectJson.height;
+        let shape = ConvexPolygon.fromRectangle(0, 0, width, height);
+        const rotation = objectJson.rotation;
+        if (rotation) {
+            shape = shape.rotated(rotation * (Math.PI / 180));
+        }
+        const shapeX = Math.min(shape.vertices.map(v => v.x));
+        const shapeY = Math.min(shape.vertices.map(v => v.y));
+        const shapeWidth = Math.max(shape.vertices.map(v => v.x - shapeX));
+        const shapeHeight = Math.max(shape.vertices.map(v => v.y - shapeY));
         const polygonJson = {
             x: objectJson.x,
             y: objectJson.y,

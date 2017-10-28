@@ -74,4 +74,10 @@ describe("Vector", () => {
         expect(dotResult).to.equal(0);
         expect(perpDotResult).to.closeTo(vector.length() * perpendicular.length(), epsilon);
     });
+
+    it("should compute rotated vector", () => {
+        const angle = Math.random();
+        const rotated = vector.rotated(angle);
+        expect(vector.length()).to.closeTo(rotated.length(), epsilon);
+    });
 });

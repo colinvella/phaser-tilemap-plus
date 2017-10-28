@@ -7,9 +7,14 @@ const average = (array) => array.reduce( ( accumulator, value ) => accumulator +
 export default class ConvexPolygon {
     constructor(vertices) {
         this.vertices = vertices;
+        this.recompute();
+    }
+
+    recompute() {
+        const vertices = this.vertices;
         this.edges = [];
         this.normals = [];
-        this.count = this.vertices.length;
+        this.count = vertices.length;
         this.centre = new Vector(
             average(vertices.map(v => v.x)),
             average(vertices.map(v => v.y))
@@ -55,6 +60,17 @@ export default class ConvexPolygon {
         return range;
     }
 
+    rotated(angle) {
+        const rotatedVertices = [];
+        for (const vertex of this.vertices) {
+            const vertexOffset = Vector.difference(new Vector(vertex.x, vertex.y), this.centre);
+            const rotatedOffset = vertexOffset.rotated(angle);
+            const rotatedVertex = Vector.sum(this.centre, rotatedOffset);
+            rotatedVertices.push(rotatedVertex);
+        }
+        return new ConvexPolygon(rotatedVertices);
+    }
+
     static fromRectangle(left, top, right, bottom) {
         const vertices = [
             new Vector(left, top),
@@ -76,11 +92,3 @@ export default class ConvexPolygon {
         return convexPolygons;
     }
 }
-
-const cps = ConvexPolygon.generateConvexPolygons([
-    new Vector(0, 0),
-    new Vector(1, 0),
-    new Vector(0.4, 0.4),
-    new Vector(0, 1)]);
-
-console.log(cps);
