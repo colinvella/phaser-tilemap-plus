@@ -42,7 +42,7 @@ describe("Range", () => {
     });
 
     it("should contain a range within min and max", () => {
-        expect(range.containsPoint(range2)).to.equal(min <= min2 && max2 <= max);
+        expect(range.containsRange(range2)).to.equal(min <= min2 && max2 <= max);
     });
 
     it("should be empty when min > max", () => {
@@ -54,7 +54,7 @@ describe("Range", () => {
     it("should compute intersection", () => {
         const intersection = Range.intersection(range, range2);
         if (max < min2 || min > max2) {
-            expect(intersection.length()).to.NaN();
+            expect(intersection.length()).to.be.NaN;
         } else {
             const len = Math.min(max, max2) - Math.max(min, min2);
             expect(intersection.length()).to.equal(len);
