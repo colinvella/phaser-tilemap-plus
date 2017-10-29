@@ -11,7 +11,7 @@ describe("ConvexPolygon", () => {
 
     it("should build an n-sided convex polygon with correct edges and normals", () => {
         const sideCount = Math.floor(Math.random() * 100);
-        const indices = [...Array(sideCount).keys()]; 
+        const indices = [...Array(sideCount).keys()];
         const angles = indices.map(index => Math.random() * Math.PI * 2);
         angles.sort();
         const vertices = angles.map(angle => new Vector(Math.cos(angle), Math.sin(angle)));
@@ -50,5 +50,17 @@ describe("ConvexPolygon", () => {
             expect(horizontalProjection.length(), "correct polygon width").to.be.equal(width);
             expect(verticalProjection.length() ,"correct polygon height").to.be.equal(height);
         }
+    });
+
+    it("should build a capsule approximation with the given cap segment count", () => {
+        // need to refine this test
+        const left = 20;
+        const top = 20;
+        const right = 40;
+        const bottom = 80;
+        const capSegments = 8;
+        const capsule = ConvexPolygon.fromCapsule(left, top, right, bottom, capSegments);
+
+        expect(capsule.edges.length, `expected ${2 + capSegments * 2} edges`).to.equal(2 + capSegments * 2);                    
     });
 });

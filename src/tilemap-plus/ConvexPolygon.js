@@ -4,6 +4,15 @@ import Range from "./Range";
 
 const average = (array) => array.reduce( ( accumulator, value ) => accumulator + value, 0 ) / array.length;
 
+const validateBounds = (left, top, right, bottom) => {
+    if (left > right) {
+        throw new Error("Right must be greater than Left");
+    }
+    if (top > bottom) {
+        throw new Error("Bottom must be greater than Top");
+    }
+};
+
 export default class ConvexPolygon {
     constructor(vertices) {
         this.vertices = vertices;
@@ -72,12 +81,8 @@ export default class ConvexPolygon {
     }
 
     static fromRectangle(left, top, right, bottom) {
-        if (left > right) {
-            throw new Error("Right must be greater than Left");
-        }
-        if (top > bottom) {
-            throw new Error("Bottom must be greater than Top");
-        }
+        validateBounds(left, top, right, bottom);
+
         const vertices = [
             new Vector(left, top),
             new Vector(right, top),
@@ -87,8 +92,29 @@ export default class ConvexPolygon {
         return new ConvexPolygon(vertices);
     }
 
-    static fromCapsule(left, top, right, bottom) {
+    static fromCapsule(left, top, right, bottom, capSegments) {
+        if (capSegments < 3) {
+            throw new Error("Specify at least 3 cap segments");
+        }
+        validateBounds(left, top, right, bottom);
+        const width = right - left;
+        const height = bottom - top;        
+        if (height < width) {
+            throw new Error("Capsule height must be larger than width");
+        }
+        const capRadius = width * 0.5;
+        const capAngles = [...Array(capSegments).keys()].map(index => -index * Math.PI / capSegments);
 
+        const centreX = (left + right) * 0.5;
+        const capVertices = capAngles.map(angle => new Vector(Math.cos(angle), Math.sin(angle)).scale(capRadius));
+        const topCapFocus = new Vector(centreX, top + capRadius);
+        let vertices = capVertices.map(capVertex => topCapFocus.plus(capVertex));
+        vertices.push(new Vector(left, topCapFocus.y));
+        const bottomCapFocus = new Vector(centreX, bottom - capRadius);
+        vertices = vertices.concat(capVertices.map(capVertex => bottomCapFocus.minus(capVertex)));
+        vertices.push(new Vector(right, bottomCapFocus.y));
+
+        return new ConvexPolygon(vertices);
     }
 
     static generateConvexPolygons(vertices) {
