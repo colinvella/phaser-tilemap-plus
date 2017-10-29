@@ -30,6 +30,11 @@ describe("Vector", () => {
         expect(clone.y).to.equal(y);
     });
 
+    it("should compare based on x and y properties", () => {
+        const otherObject = { x, y };
+        expect(vector.equals(otherObject)).to.be.true;
+    });
+
     it("should compute vector addition", () => {
         const result = Vector.sum(vector, vector2);
         expect(result.x).to.equal(x + x2);

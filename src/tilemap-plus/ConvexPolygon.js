@@ -72,6 +72,12 @@ export default class ConvexPolygon {
     }
 
     static fromRectangle(left, top, right, bottom) {
+        if (left > right) {
+            throw new Error("Right must be greater than Left");
+        }
+        if (top > bottom) {
+            throw new Error("Bottom must be greater than Top");
+        }
         const vertices = [
             new Vector(left, top),
             new Vector(right, top),
@@ -79,6 +85,10 @@ export default class ConvexPolygon {
             new Vector(left, bottom)
         ];
         return new ConvexPolygon(vertices);
+    }
+
+    static fromCapsule(left, top, right, bottom) {
+
     }
 
     static generateConvexPolygons(vertices) {

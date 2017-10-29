@@ -8,6 +8,10 @@ export default class Vector {
         return new Vector(this.x, this.y);
     }
 
+    equals(vector) {
+        return vector && this.x === vector.x && this.y === vector.y;
+    }
+
     length() {
         return Math.sqrt(this.x * this.x + this.y * this.y)
     }
