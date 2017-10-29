@@ -17,6 +17,13 @@ Phaser.Plugin.TilemapPlus = function (game, parent) {
         return tilemap;
     };
 
+    const originalSpriteFactory = Phaser.GameObjectFactory.prototype.sprite;
+    Phaser.GameObjectFactory.prototype.sprite = function(x, y, key, frame, group) {
+        const sprite = originalSpriteFactory.call(this, x, y, key, frame, group);
+        sprite.plus = {};
+        return sprite;
+    };
+
     function jsonKey(key) {
         return key + "-TilemapPlus";
     }

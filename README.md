@@ -1,8 +1,5 @@
 # phaser-tilemap-plus [![Build Status](https://travis-ci.org/colinvella/phaser-tilemap-plus.svg?branch=master)](https://travis-ci.org/colinvella/phaser-tilemap-plus)
 
-*NOTE:* This plugin is a work in progress in early development stage. Feel free to try it out or even integrate it in your
-projects, but please bear in mind that the API is still in flux and future updates may introduce breaking changes.
-
 Tilemap animations, physics, events and custom property enhancements for Tiled JSON map files within the [Phaser](http://phaser.io) game framework
 
 This is a Phaser plugin that leverages the map editing capabilities of the [Tiled](http://www.mapeditor.org/) map editor. It allows the developer to selectively enable the following features:
@@ -13,7 +10,10 @@ This is a Phaser plugin that leverages the map editing capabilities of the [Tile
 
 The plugin is designed to facilitate integration into existing code bases with minimal code changes.
 
-## How does it work
+*NOTE:* This plugin is a work in progress in early development stage. Feel free to try it out or even integrate it in your
+projects, but please bear in mind that the API is still in flux and future updates may introduce breaking changes.
+
+## How It Works
 The plugin injects code into Phaser's loader mechanism to load the underlying Tiled JSON files in a separate cache key, extracting information currently ignored by the tilemap loader. It then enhances the loaded tilemap object with additional functionality, such as animation, physiscs, custom properties and event handling. 
 
 ## Installation
