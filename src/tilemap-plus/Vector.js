@@ -47,8 +47,8 @@ export default class Vector {
         return this.x * vector.x + this.y * vector.y;
     }
 
-    static perpDot(v1, v2) {
-        return v1.x * v2.y - v1.y * v2.x;
+    perpDot(vector) {
+        return this.x * vector.y - this.y * vector.x;
     }
 
     static scale(v, s) {

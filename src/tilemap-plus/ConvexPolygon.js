@@ -42,7 +42,7 @@ export default class ConvexPolygon {
         let prevPerpDot = 0;
         for (let i = 0; i < this.count; i++) {
             let j = (i + 1) % this.count;
-            const perpDot = Vector.perpDot(this.edges[i], this.edges[j]);
+            const perpDot = this.edges[i].perpDot(this.edges[j]);
             if (perpDot * prevPerpDot < 0) {
                 return false;
             }
