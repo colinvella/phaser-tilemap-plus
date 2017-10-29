@@ -28,7 +28,7 @@ describe("ConvexPolygon", () => {
         const sampledNormal = convexPolygon.normals[randomSideIndex];
         expect(sampledEdge.equals(edge), `expected correct computation on edge sample`).to.be.true;
         expect(sampledNormal.length(), `expected normal magnitude on normal sample`).to.closeTo(1, epsilon);
-        expect(Vector.dot(sampledEdge, sampledNormal), `expected sampled normal perpendicular to edge`).to.closeTo(0, epsilon);
+        expect(sampledEdge.dot(sampledNormal), `expected sampled normal perpendicular to edge`).to.closeTo(0, epsilon);
     });
 
     it("should build polygon from rectangle definition", () => {

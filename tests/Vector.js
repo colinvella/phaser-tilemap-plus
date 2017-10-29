@@ -63,7 +63,7 @@ describe("Vector", () => {
     });
 
     it("should compute dot product", () => {
-        const result = Vector.dot(vector, vector2);
+        const result = vector.dot(vector2);
         expect(result).to.equal(x * x2 + y * y2);
     });
 
@@ -74,7 +74,7 @@ describe("Vector", () => {
 
     it("should compute perpendicular vector", () => {
         const perpendicular = vector.perpendicular();
-        const dotResult = Vector.dot(vector, perpendicular);
+        const dotResult = vector.dot(perpendicular);
         const perpDotResult = Vector.perpDot(vector, perpendicular);
         expect(dotResult).to.equal(0);
         expect(perpDotResult).to.closeTo(vector.length() * perpendicular.length(), epsilon);

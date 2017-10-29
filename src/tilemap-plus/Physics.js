@@ -60,7 +60,7 @@ export default class Physics {
                 body.y += normal.y;
 
                 // if moving away, no resitution to compute
-                const speedNormal = Vector.dot(velocity, normal);
+                const speedNormal = velocity.dot(normal);
                 if (speedNormal >= 0) {
                     continue;
                 }
@@ -72,7 +72,7 @@ export default class Physics {
                 // compute restitution on normal component
                 let newVelocityNormal;
                 const bounce = shape.properties && shape.properties.bounce;
-                if (bounce) {
+                if (bounce && penetration.length() > 2) {
                     newVelocityNormal = Vector.scale(velocityNormal, -bounce);
                 } else {
                     newVelocityNormal = new Vector();                    
@@ -87,7 +87,7 @@ export default class Physics {
                 body.velocity.y = newVelocity.y;
 
                 // prevent sprites sticking in adjacent shapes
-                if (Vector.dot(normal, gravityVector) < 0) {
+                if (normal.dot(gravityVector) < 0) {
                     body.x -= gravityNormal.x;
                     body.y -= gravityNormal.y;
                 }
@@ -182,8 +182,9 @@ export default class Physics {
                     }
                 }
                 
+                // ensure normal pointing towards sprite
                 const spriteOffset = spritePolygon.centre.minus(this.polygon.centre);
-                if (Vector.dot(spriteOffset, minNormal) < 0) {
+                if (spriteOffset.dot(minNormal) < 0) {
                     minNormal = Vector.scale(minNormal, -1);
                 }
 

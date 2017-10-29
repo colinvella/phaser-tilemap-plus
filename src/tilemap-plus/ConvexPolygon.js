@@ -27,7 +27,7 @@ export default class ConvexPolygon {
                 // generate outward normals
                 let normal = edge.normalized().perpendicular();
                 const radius = vertices[i].minus(this.centre);
-                if (Vector.dot(radius, normal) < 0) {
+                if (radius.dot(normal) < 0) {
                     normal = Vector.scale(normal, -1);
                 }                
                 this.normals.push(normal);
@@ -54,7 +54,7 @@ export default class ConvexPolygon {
     projectOntoAxis(axis) {
         const range = new Range();
         for (const vertex of this.vertices) {
-            const projection = Vector.dot(vertex, axis);
+            const projection = vertex.dot(axis);
             range.extendTo(projection);
         }
         return range;

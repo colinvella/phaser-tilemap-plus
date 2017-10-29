@@ -43,8 +43,8 @@ export default class Vector {
         return new Vector(this.x - vector.x, this.y - vector.y);
     }
 
-    static dot(v1, v2) {
-        return v1.x * v2.x + v1.y * v2.y;
+    dot(vector) {
+        return this.x * vector.x + this.y * vector.y;
     }
 
     static perpDot(v1, v2) {
