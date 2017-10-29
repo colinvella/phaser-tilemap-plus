@@ -92,21 +92,20 @@ export default class Physics {
         // convert to convex polygon
         const width = objectJson.width;
         const height = objectJson.height;
-        let shape = ConvexPolygon.fromRectangle(0, 0, width, height);
-        const rotation = objectJson.rotation;
-        if (rotation) {
-            shape = shape.rotated(rotation * (Math.PI / 180));
+        let widthVector = new Vector(width, 0);
+        let heightVector = new Vector(0, height);
+        // handle box rotation
+        const angle = -objectJson.rotation * Math.PI / 180;
+        if (angle) {
+            widthVector = widthVector.rotated(angle);
+            heightVector = heightVector.rotated(angle);
         }
-        const shapeX = Math.min(shape.vertices.map(v => v.x));
-        const shapeY = Math.min(shape.vertices.map(v => v.y));
-        const shapeWidth = Math.max(shape.vertices.map(v => v.x - shapeX));
-        const shapeHeight = Math.max(shape.vertices.map(v => v.y - shapeY));
         const polygonJson = {
             x: objectJson.x,
             y: objectJson.y,
             width: objectJson.width,
             height: objectJson.height,
-            polygon: [{x: 0, y: 0}, {x: width, y: 0}, {x: width, y: height }, {x: 0, y: height} ],
+            polygon: [{x: 0, y: 0}, widthVector, Vector.sum(widthVector, heightVector), heightVector],
             properties: objectJson.properties
         };
         this.addPolygon(polygonJson);
