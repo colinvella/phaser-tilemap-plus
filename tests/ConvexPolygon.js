@@ -23,7 +23,7 @@ describe("ConvexPolygon", () => {
         const randomSideIndex = Math.floor(Math.random() * sideCount);
         const vertex1 = vertices[randomSideIndex];
         const vertex2 = vertices[(randomSideIndex + 1) % sideCount];
-        const edge = Vector.difference(vertex2, vertex1);
+        const edge = vertex2.minus(vertex1);
         const sampledEdge = convexPolygon.edges[randomSideIndex];
         const sampledNormal = convexPolygon.normals[randomSideIndex];
         expect(sampledEdge.equals(edge), `expected correct computation on edge sample`).to.be.true;

@@ -36,13 +36,13 @@ describe("Vector", () => {
     });
 
     it("should compute vector addition", () => {
-        const result = Vector.sum(vector, vector2);
+        const result = vector.plus(vector2);
         expect(result.x).to.equal(x + x2);
         expect(result.y).to.equal(y + y2);
     });
 
     it("should compute vector difference", () => {
-        const result = Vector.difference(vector, vector2);
+        const result = vector.minus(vector2);
         expect(result.x).to.equal(x - x2);
         expect(result.y).to.equal(y - y2);
     });

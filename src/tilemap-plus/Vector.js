@@ -35,12 +35,12 @@ export default class Vector {
         return new Vector(cos * this.x + sin * this.y, -sin * this.x + cos * this.y);
     }
 
-    static sum(v1, v2) {
-        return new Vector(v1.x + v2.x, v1.y + v2.y);
+    plus(vector) {
+        return new Vector(this.x + vector.x, this.y + vector.y);
     }
 
-    static difference(v1, v2) {
-        return new Vector(v1.x - v2.x, v1.y - v2.y);
+    minus(vector) {
+        return new Vector(this.x - vector.x, this.y - vector.y);
     }
 
     static dot(v1, v2) {

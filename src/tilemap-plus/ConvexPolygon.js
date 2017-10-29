@@ -22,11 +22,11 @@ export default class ConvexPolygon {
         if (this.count > 1) {
             for (let i = 0; i < this.count; i++) {
                 let j = (i + 1) % this.count;
-                const edge = Vector.difference(vertices[j], vertices[i]);
+                const edge = vertices[j].minus(vertices[i]);
                 this.edges.push(edge);
                 // generate outward normals
                 let normal = edge.normalized().perpendicular();
-                const radius = Vector.difference(vertices[i], this.centre);
+                const radius = vertices[i].minus(this.centre);
                 if (Vector.dot(radius, normal) < 0) {
                     normal = Vector.scale(normal, -1);
                 }                
@@ -63,9 +63,9 @@ export default class ConvexPolygon {
     rotated(angle) {
         const rotatedVertices = [];
         for (const vertex of this.vertices) {
-            const vertexOffset = Vector.difference(new Vector(vertex.x, vertex.y), this.centre);
+            const vertexOffset = new Vector(vertex.x, vertex.y).minus(this.centre);
             const rotatedOffset = vertexOffset.rotated(angle);
-            const rotatedVertex = Vector.sum(this.centre, rotatedOffset);
+            const rotatedVertex = this.centre.plus(rotatedOffset);
             rotatedVertices.push(rotatedVertex);
         }
         return new ConvexPolygon(rotatedVertices);

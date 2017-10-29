@@ -37,6 +37,7 @@ export default class Physics {
         const gravity = sprite.game.physics.arcade.gravity;
         const gravityVector = new Vector(gravity.x, gravity.y);
         const gravityNormal = gravityVector.normalized();
+        const velocity = new Vector(body.velocity.x, body.velocity.y);
         
         if (!body.contactNormal) {
             body.contactNormal = new Vector();            
@@ -44,15 +45,19 @@ export default class Physics {
         body.contactNormal.x = body.contactNormal.y = 0;
         for (const shape of this.shapes) {
             const collision = shape.collideWidth(body);
-            const velocity = body.velocity;
             if (collision) {
                 const penetration = collision.penetration;
                 const normal = collision.normal;
-                body.contactNormal = Vector.sum(body.contactNormal, normal);
+                body.contactNormal = body.contactNormal.plus(normal);
                 
                 // resolve penetration
                 body.x -= penetration.x;
                 body.y -= penetration.y;
+
+                // additional unit in direction of normal prevents sprite from
+                // falling between vertical seams
+                body.x += normal.x;
+                body.y += normal.y;
 
                 // if moving away, no resitution to compute
                 const speedNormal = Vector.dot(velocity, normal);
@@ -62,7 +67,7 @@ export default class Physics {
                     
                 // decompose old velocity into normal and tangent components
                 const velocityNormal = Vector.scale(normal, speedNormal);
-                const velocityTangent = Vector.difference(velocity, velocityNormal);
+                const velocityTangent = velocity.minus(velocityNormal);
 
                 // compute restitution on normal component
                 let newVelocityNormal;
@@ -76,14 +81,16 @@ export default class Physics {
                 // todo: compute friction on tangent component                
                 const newVelocityTangent = velocityTangent;
                 
-                const newVelocity = Vector.sum(newVelocityNormal, newVelocityTangent);
+                const newVelocity = newVelocityNormal.plus(newVelocityTangent);
 
                 body.velocity.x = newVelocity.x;
                 body.velocity.y = newVelocity.y;
 
                 // prevent sprites sticking in adjacent shapes
-                body.x -= gravityNormal.x;
-                body.y -= gravityNormal.y;
+                if (Vector.dot(normal, gravityVector) < 0) {
+                    body.x -= gravityNormal.x;
+                    body.y -= gravityNormal.y;
+                }
             }
         }
         body.contactNormal = body.contactNormal.normalized();
@@ -106,7 +113,7 @@ export default class Physics {
             y: objectJson.y,
             width: objectJson.width,
             height: objectJson.height,
-            polygon: [{x: 0, y: 0}, widthVector, Vector.sum(widthVector, heightVector), heightVector],
+            polygon: [{x: 0, y: 0}, widthVector, widthVector.plus(heightVector), heightVector],
             properties: objectJson.properties
         };
         this.addPolygon(polygonJson);
@@ -149,7 +156,7 @@ export default class Physics {
                 const bodyBottom = body.y + body.height;
 
                 // sat axes - 2 ortho axis normals and object poly normals
-                // first 2 normals prune search when sprite out of object boudning box
+                // first 2 normals prune search when sprite out of object bounding box
                 const axes = [new Vector(1, 0), new Vector(0, 1)].concat(this.polygon.normals);
 
                 const spritePolygon = ConvexPolygon.fromRectangle(bodyLeft, bodyTop, bodyRight, bodyBottom);
@@ -175,7 +182,7 @@ export default class Physics {
                     }
                 }
                 
-                const spriteOffset = Vector.difference(spritePolygon.centre, this.polygon.centre);
+                const spriteOffset = spritePolygon.centre.minus(this.polygon.centre);
                 if (Vector.dot(spriteOffset, minNormal) < 0) {
                     minNormal = Vector.scale(minNormal, -1);
                 }
