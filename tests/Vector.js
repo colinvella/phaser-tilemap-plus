@@ -48,7 +48,7 @@ describe("Vector", () => {
     });
 
     it("should scale", () => {
-        const result = Vector.scale(vector, scale);
+        const result = vector.scale(scale);
         expect(result.x).to.equal(x * scale);
         expect(result.y).to.equal(y * scale);
     });

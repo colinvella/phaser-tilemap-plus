@@ -66,14 +66,14 @@ export default class Physics {
                 }
                     
                 // decompose old velocity into normal and tangent components
-                const velocityNormal = Vector.scale(normal, speedNormal);
+                const velocityNormal = normal.scale(speedNormal);
                 const velocityTangent = velocity.minus(velocityNormal);
 
                 // compute restitution on normal component
                 let newVelocityNormal;
                 const bounce = shape.properties && shape.properties.bounce;
                 if (bounce && penetration.length() > 2) {
-                    newVelocityNormal = Vector.scale(velocityNormal, -bounce);
+                    newVelocityNormal = velocityNormal.scale(-bounce);
                 } else {
                     newVelocityNormal = new Vector();                    
                 }
@@ -185,11 +185,11 @@ export default class Physics {
                 // ensure normal pointing towards sprite
                 const spriteOffset = spritePolygon.centre.minus(this.polygon.centre);
                 if (spriteOffset.dot(minNormal) < 0) {
-                    minNormal = Vector.scale(minNormal, -1);
+                    minNormal = minNormal.scale(-1);
                 }
 
                 const collision = {
-                    penetration: Vector.scale(minNormal, -minPenetration),
+                    penetration: minNormal.scale(-minPenetration),
                     normal: minNormal
                 };
 

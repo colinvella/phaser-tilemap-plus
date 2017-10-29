@@ -28,7 +28,7 @@ export default class ConvexPolygon {
                 let normal = edge.normalized().perpendicular();
                 const radius = vertices[i].minus(this.centre);
                 if (radius.dot(normal) < 0) {
-                    normal = Vector.scale(normal, -1);
+                    normal = normal.scale(-1);
                 }                
                 this.normals.push(normal);
             }

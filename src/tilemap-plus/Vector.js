@@ -51,7 +51,7 @@ export default class Vector {
         return this.x * vector.y - this.y * vector.x;
     }
 
-    static scale(v, s) {
-        return new Vector(v.x * s, v.y * s);
+    scale(factor) {
+        return new Vector(this.x * factor, this.y * factor);
     }    
 }
