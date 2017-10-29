@@ -81,6 +81,7 @@ export default class Physics {
                 body.velocity.x = newVelocity.x;
                 body.velocity.y = newVelocity.y;
 
+                // prevent sprites sticking in adjacent shapes
                 body.x -= gravityNormal.x;
                 body.y -= gravityNormal.y;
             }

@@ -1,5 +1,8 @@
 # phaser-tilemap-plus [![Build Status](https://travis-ci.org/colinvella/phaser-tilemap-plus.svg?branch=master)](https://travis-ci.org/colinvella/phaser-tilemap-plus)
 
+*NOTE:* This plugin is a work in progress in early development stage. Feel free to try it out or even integrate it in your
+projects, but please bear in mind that the API is still in flux and future updates may introduce breaking changes.
+
 Tilemap animations, physics, events and custom property enhancements for Tiled JSON map files within the [Phaser](http://phaser.io) game framework
 
 This is a Phaser plugin that leverages the map editing capabilities of the [Tiled](http://www.mapeditor.org/) map editor. It allows the developer to selectively enable the following features:
@@ -79,7 +82,12 @@ To collide sprites against the map, call the following in your `update()` method
 game.tilemap.plus.physics.collideWith(sprite);
 ```
 
-Whenever a sprite is touching the collision layer, its body will have contactNormal `Vector` indicating the direction away from the contact surfaces. This can be used to determine when and in what direction to jump off the surface.
+To make sprites rebound off surfaces, add a `bounce` custom property to an object in the object layer, with a value that is a fraction
+of the rebound velocity. For example. if you want a sprite to bounce back with half the incoming velocity, set `bounce` to `0.5`. To
+make Sonic-style springs, you can assign a value higher than `1.0`.
+
+Whenever a sprite is touching the collision layer, its body will have `contactNormal` of type `Vector` indicating the direction away from the contact surfaces. This can be used to determine when and in what direction to jump off the surface. For example, a sprite is
+allowed to jump only when `sprite.body.contactNormal.y < 0`, that is, has a component pointing upwards.
 
 # Custom Properties
 
