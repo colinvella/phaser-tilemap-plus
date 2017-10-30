@@ -1,5 +1,6 @@
 import PolyDecomp from "poly-decomp";
 import Vector from "./Vector";
+import AABB from "./AABB";
 import Range from "./Range";
 
 const average = (array) => array.reduce( ( accumulator, value ) => accumulator + value, 0 ) / array.length;
@@ -21,6 +22,7 @@ export default class ConvexPolygon {
 
     recompute() {
         const vertices = this.vertices;
+        this.aabb = AABB.fromPoints(vertices);
         this.edges = [];
         this.normals = [];
         this.count = vertices.length;
@@ -28,6 +30,7 @@ export default class ConvexPolygon {
             average(vertices.map(v => v.x)),
             average(vertices.map(v => v.y))
         );
+        
         if (this.count > 1) {
             for (let i = 0; i < this.count; i++) {
                 let j = (i + 1) % this.count;
