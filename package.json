@@ -1,6 +1,6 @@
 {
   "name": "phaser-tilemap-plus",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Tilemap animations, physics, events and custom property enhancements for Tiled JSON map files",
   "main": "dist/phaser-tilemap-plus.js",
   "scripts": {
