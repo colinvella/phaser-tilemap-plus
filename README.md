@@ -69,10 +69,15 @@ code after adding the tilemap and corresponding tilemap layers in your `create()
 ```js
 game.tilemap.plus.animation.enable();
 ```
+
+![image](https://user-images.githubusercontent.com/1244038/32300241-dfa24bc2-bf58-11e7-83d8-1aaa6e7c99d1.png)
+
 Animations can be disabled by calling `tilemap.plus.animation.disable()`.
 
 # Enable Physics
 You can add an object layer to your Tiled map and add polygons and rectangles to define collidable boundaries in your map, independently from the tiles used. This allows the use of sloped or curved floors, walls and ceilings, against which sprites can interact accordingly, such as sliding down. Object layer based collision also allows the implementation of hidden passages and platforms.
+
+![image](https://user-images.githubusercontent.com/1244038/32300160-874d7096-bf58-11e7-9d22-d808a2b672b5.png)
 
 To enable collision against an object layer, call the `enableObjectLayer` method, passing in the name of the object layer within the map, like this:
 ```js
