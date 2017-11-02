@@ -2,6 +2,8 @@
 
 Tilemap animations, physics, events and custom property enhancements for Tiled JSON map files within the [Phaser](http://phaser.io) game framework
 
+Check out the [demo](https://colinvella.github.io/phaser-tilemap-plus-demo/).
+
 ![phaser-tilemap-plus-demo](https://user-images.githubusercontent.com/1244038/32296653-17530fd6-bf4d-11e7-80f2-c2d82bbed151.gif)
 
 This is a Phaser plugin that leverages the map editing capabilities of the [Tiled](http://www.mapeditor.org/) map editor. It allows the developer to selectively enable the following features:
