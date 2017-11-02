@@ -83,6 +83,11 @@ export default class ConvexPolygon {
         return new ConvexPolygon(rotatedVertices);
     }
 
+    translated(offset) {
+        const translatedVertices = this.vertices.map(vertex => vertex.plus(offset));
+        return new ConvexPolygon(translatedVertices);
+    }
+
     static fromRectangle(left, top, right, bottom) {
         validateBounds(left, top, right, bottom);
 

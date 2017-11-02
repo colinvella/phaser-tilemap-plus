@@ -43,57 +43,61 @@ export default class Physics {
             body.contactNormal = new Vector();            
         }
         body.contactNormal.x = body.contactNormal.y = 0;
+        let totalPenetration = new Vector();
+        let bounce = 0;
         for (const shape of this.shapes) {
             const collision = shape.collideWidth(body);
-            if (collision) {
-                const penetration = collision.penetration;
-                const normal = collision.normal;
-                body.contactNormal = body.contactNormal.plus(normal);
-                
-                // resolve penetration
-                body.x -= penetration.x;
-                body.y -= penetration.y;
+            if (!collision) {
+                continue;
+            }
 
-                // additional unit in direction of normal prevents sprite from
-                // falling between vertical seams
-                body.x += normal.x;
-                body.y += normal.y;
+            const penetration = collision.penetration;
+            const normal = collision.normal;
 
-                // if moving away, no resitution to compute
-                const speedNormal = velocity.dot(normal);
-                if (speedNormal >= 0) {
-                    continue;
-                }
-                    
-                // decompose old velocity into normal and tangent components
-                const velocityNormal = normal.scale(speedNormal);
-                const velocityTangent = velocity.minus(velocityNormal);
+            // if moving away, no resitution to compute
+            const speedNormal = velocity.dot(normal);
+            if (speedNormal >= 0) {
+                continue;
+            }
+            
+            // accumulate normal from multiple shapes
+            body.contactNormal = body.contactNormal.plus(normal);
 
-                // compute restitution on normal component
-                let newVelocityNormal;
-                const bounce = shape.properties && shape.properties.bounce;
-                if (bounce && penetration.length() > 2) {
-                    newVelocityNormal = velocityNormal.scale(-bounce);
-                } else {
-                    newVelocityNormal = new Vector();                    
-                }
+            // accumulate penetration
+            totalPenetration = totalPenetration.plus(penetration);
 
-                // todo: compute friction on tangent component                
-                const newVelocityTangent = velocityTangent;
-                
-                const newVelocity = newVelocityNormal.plus(newVelocityTangent);
-
-                body.velocity.x = newVelocity.x;
-                body.velocity.y = newVelocity.y;
-
-                // prevent sprites sticking in adjacent shapes
-                if (normal.dot(gravityVector) < 0) {
-                    body.x -= gravityNormal.x;
-                    body.y -= gravityNormal.y;
-                }
+            // accumulate bounce
+            const properties = shape.properties;
+            const shapeBounce = properties && properties.bounce;
+            if (shapeBounce) {
+                bounce += shapeBounce;
             }
         }
+
+        // resolve penetration
+        body.x -= totalPenetration.x;
+        body.y -= totalPenetration.y;
+                
         body.contactNormal = body.contactNormal.normalized();
+        const normal = body.contactNormal;
+
+        const speedNormal = velocity.dot(normal);        
+            
+        // decompose old velocity into normal and tangent components
+        const velocityNormal = normal.scale(speedNormal);
+        const velocityTangent = velocity.minus(velocityNormal);
+
+        // compute restitution on normal component
+        let newVelocityNormal;
+        newVelocityNormal = velocityNormal.scale(-bounce);
+
+        // todo: compute friction on tangent component                
+        const newVelocityTangent = velocityTangent;
+        
+        const newVelocity = newVelocityNormal.plus(newVelocityTangent);
+
+        body.velocity.x = newVelocity.x;
+        body.velocity.y = newVelocity.y;
     }
 
     addRectangle(objectJson) {
@@ -150,16 +154,28 @@ export default class Physics {
             polygon: convexPolygon,
             properties: properties,
             collideWidth: function(body) {
+                const sprite = body.sprite;
+                const spritePosition = new Vector(sprite.x, sprite.y);
                 const bodyLeft = body.x;
                 const bodyRight = body.x + body.width;
                 const bodyTop = body.y;
                 const bodyBottom = body.y + body.height;
 
-                // sat axes - 2 ortho axis normals and object poly normals
-                // first 2 normals prune search when sprite out of object bounding box
-                const axes = [new Vector(1, 0), new Vector(0, 1)].concat(this.polygon.normals);
+                let axes;
 
-                const spritePolygon = ConvexPolygon.fromRectangle(bodyLeft, bodyTop, bodyRight, bodyBottom);
+                let spritePolygon;
+                if (body.plus && body.plus.shape) {
+                    spritePolygon = body.plus.shape.translated(spritePosition);
+
+                    // sat axes - more complex shape - all edge normals
+                    axes = spritePolygon.normals.concat(this.polygon.normals);
+                } else {
+                    spritePolygon = ConvexPolygon.fromRectangle(bodyLeft, bodyTop, bodyRight, bodyBottom);
+
+                    // sat axes - 2 ortho axis normals and object poly normals
+                    // first 2 normals prune search when sprite out of object bounding box
+                    axes = [new Vector(1, 0), new Vector(0, 1)].concat(this.polygon.normals);
+                }
 
                 let minPenetration = Number.POSITIVE_INFINITY;
                 let minNormal;

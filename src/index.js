@@ -1,4 +1,5 @@
 import TilemapPlus from "./tilemap-plus/TilemapPlus";
+import SpritePlus from "./tilemap-plus/SpritePlus";
 
 Phaser.Plugin.TilemapPlus = function (game, parent) {
 	Phaser.Plugin.call(this, game, parent);
@@ -20,7 +21,7 @@ Phaser.Plugin.TilemapPlus = function (game, parent) {
     const originalSpriteFactory = Phaser.GameObjectFactory.prototype.sprite;
     Phaser.GameObjectFactory.prototype.sprite = function(x, y, key, frame, group) {
         const sprite = originalSpriteFactory.call(this, x, y, key, frame, group);
-        sprite.plus = {};
+        sprite.plus = new SpritePlus(sprite);
         return sprite;
     };
 

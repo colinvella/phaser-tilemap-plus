@@ -8,7 +8,7 @@ describe("ConvexPolygon", () => {
     
     beforeEach(() => {
     });
-
+        
     it("should build an n-sided convex polygon with correct edges and normals", () => {
         const sideCount = Math.floor(Math.random() * 100);
         const indices = [...Array(sideCount).keys()];
@@ -62,5 +62,29 @@ describe("ConvexPolygon", () => {
         const capsule = ConvexPolygon.fromCapsule(left, top, right, bottom, capSegments);
 
         expect(capsule.edges.length, `expected ${2 + capSegments * 2} edges`).to.equal(2 + capSegments * 2);                    
+    });
+
+    it("should create a translated copy of itself", () => {
+        let left = Math.random();
+        let top = Math.random();
+        let right = Math.random();
+        let bottom = Math.random();
+        if (left > right) {
+            [left, right] = [right, left];
+        }
+        if (top > bottom) {
+            [top, bottom] = [bottom, top];
+        }
+        const box1 = ConvexPolygon.fromRectangle(left, top, right, bottom);
+        const offset = new Vector(Math.random(), Math.random());
+        const box2 = box1.translated(offset);
+
+        const rangeBox1X = box1.projectOntoAxis(new Vector(1, 0));
+        const rangeBox2X = box2.projectOntoAxis(new Vector(1, 0));
+        expect(rangeBox2X.max - rangeBox1X.max, `expected correct horizontal translation`).to.equal(offset.x);                    
+
+        const rangeBox1Y = box1.projectOntoAxis(new Vector(0, 1));
+        const rangeBox2Y = box2.projectOntoAxis(new Vector(0, 1));
+        expect(rangeBox2Y.max - rangeBox1Y.max, `expected correct horizontal translation`).to.equal(offset.y);                    
     });
 });
