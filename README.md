@@ -18,7 +18,7 @@ The plugin is designed to facilitate integration into existing code bases with m
 projects, but please bear in mind that the API is still in flux and future updates may introduce breaking changes.
 
 ## How It Works
-The plugin injects code into Phaser's loader mechanism to load the underlying Tiled JSON files in a separate cache key, extracting information currently ignored by the tilemap loader. It then enhances the loaded tilemap object with additional functionality, such as animation, physiscs, custom properties and event handling. 
+The plugin injects code into Phaser's loader mechanism to load the underlying Tiled JSON files in a separate cache key, extracting information currently ignored by the tilemap loader. It also injects a custom factory function to enhance the loaded tilemap object with additional functionality, such as animation, physiscs, custom properties and event handling.
 
 ## Installation
 ```shell
@@ -60,14 +60,13 @@ or
   this.game.plugins.add(Phaser.Plugin.TilemapPlus); // ES6 if create() is a method override
 ```
 
-Load the tilemap and corresponding tilemap layers as you normally would. The plugin will transparently enhance the tilemap to
-support the additional features.
+Load the tilemap and corresponding tilemap layers as you normally would. The plugin will transparently enhance the tilemap to support the additional features.
 
 *NOTE:* In general, the difference between ES5 and ES6 code is that in ES6, the `game` object is a property of the game state object and must be prefixed by `this`. The next examples will quote only ES5 code for the sake of brevity.
 
 # Enable Tile Animations
-If you have defined tile animations within Tiled prior to exporting the map to JSON format, you can enable them adding the following
-code after adding the tilemap and corresponding tilemap layers in your `create()` function:
+If you have defined tile animations within Tiled prior to exporting the map to JSON format, you can enable them by adding the following code after adding the tilemap and corresponding tilemap layers in your `create()` function:
+
 ```js
 game.tilemap.plus.animation.enable();
 ```
