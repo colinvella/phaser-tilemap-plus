@@ -94,6 +94,8 @@ To make sprites rebound off surfaces, add a `bounce` custom property to an objec
 of the rebound velocity. For example. if you want a sprite to bounce back with half the incoming velocity, set `bounce` to `0.5`. To
 make Sonic-style springs, you can assign a value higher than `1.0`.
 
+<p align="center"><img src="https://user-images.githubusercontent.com/1244038/32395807-f74aa41e-c0e2-11e7-90cf-5f7e882fb724.gif" alt="phaser-tilemap-plus physics bounce"></p>
+
 Whenever a sprite is touching the collision layer, its body will have `contactNormal` of type `Vector` indicating the direction away from the contact surfaces. This can be used to determine when and in what direction to jump off the surface. For example, a sprite is
 allowed to jump only when `sprite.body.contactNormal.y < 0`, that is, has a component pointing upwards.
 
