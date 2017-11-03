@@ -9,7 +9,7 @@ Check out the [demo](https://colinvella.github.io/phaser-tilemap-plus-demo/).
 This is a Phaser plugin that leverages the map editing capabilities of the [Tiled](http://www.mapeditor.org/) map editor. It allows the developer to selectively enable the following features:
 * tile animation
 * object layer based collision (for use with Arcade physics)
-* custom properties (not yet implemented)
+* custom properties
 * object layer based event handling (not yet implemented)
 
 The plugin is designed to facilitate integration into existing code bases with minimal code changes.
