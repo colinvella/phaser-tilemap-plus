@@ -99,22 +99,34 @@ allowed to jump only when `sprite.body.contactNormal.y < 0`, that is, has a comp
 
 # Custom Properties
 
-The plugin exposes custom properties at the tilemap, layer and tileset level, that can be used to define meta data such as the player's starting position, exit point, level effects and so on.
+Tiled allows the level designer to define custom properties at the map, layer and tileset level, that can be used to define meta data such as the player's starting position, exit point, level effects and so on. 
+The plugin exposes these properties in the corresponding `tilemap`, `tilemapLayer`s and `tileset`s instanciated in the `create()` function of the game state.
 
 ## Tilemap Custom Properties
 
-To do
+Tilemap custom properties can be accessed as follows:
+
+```js
+// get player start position from tilemap custom properties
+var mapProperties = tilemap.plus.properties;
+player.x = mapProperties.playerStartX;
+player.y = mapProperties.playerStartY;
+```
 
 ## Layer Custom Properties
 
-Tilemap layer custom properties can be accessed from the tilemap layer object that is instanciated in the `create()` function. Each layer object contains a `plus` extensiob that contains a `properties` object as defined in the Tiled map editor. The properties may be accessed as follows:
+Custom properties defined at the tilemap layer level can be accessed as follows:
 
 ```js
-player.x = groundLayer.plus.properties.playerStartX;
-player.y = groundLayer.plus.properties.playerStartY;
+// get layer effects from custom properties
+var layerProperties = tilemapLayer.plus.properties;
+var rainEffect = layerProperties.rain;
+var windEffect = layerProperties.wind;
 ```
 
 ## Tileset Custom Properties
+
+To do
 
 # Object Layer Event Handling
 
