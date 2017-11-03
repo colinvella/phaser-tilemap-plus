@@ -99,7 +99,22 @@ allowed to jump only when `sprite.body.contactNormal.y < 0`, that is, has a comp
 
 # Custom Properties
 
+The plugin exposes custom properties at the tilemap, layer and tileset level, that can be used to define meta data such as the player's starting position, exit point, level effects and so on.
+
+## Tilemap Custom Properties
+
 To do
+
+## Layer Custom Properties
+
+Tilemap layer custom properties can be accessed from the tilemap layer object that is instanciated in the `create()` function. Each layer object contains a `plus` extensiob that contains a `properties` object as defined in the Tiled map editor. The properties may be accessed as follows:
+
+```js
+player.x = groundLayer.plus.properties.playerStartX;
+player.y = groundLayer.plus.properties.playerStartY;
+```
+
+## Tileset Custom Properties
 
 # Object Layer Event Handling
 
