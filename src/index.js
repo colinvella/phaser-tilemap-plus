@@ -1,5 +1,6 @@
 import TilemapPlus from "./tilemap-plus/TilemapPlus";
 import TilemapLayerPlus from "./tilemap-plus/TilemapLayerPlus";
+import TilesetPlus from "./tilemap-plus/TilesetPlus";
 import SpritePlus from "./tilemap-plus/SpritePlus";
 
 Phaser.Plugin.TilemapPlus = function (game, parent) {
@@ -24,6 +25,13 @@ Phaser.Plugin.TilemapPlus = function (game, parent) {
         const tilemapLayer = originalTilemapCreateLayer.call(this, layer, width, height, group);
         tilemapLayer.plus = new TilemapLayerPlus(tilemapLayer);
         return tilemapLayer;
+    };
+
+    const originalTilemapAddTilesetImage = Phaser.Tilemap.prototype.addTilesetImage;
+    Phaser.Tilemap.prototype.addTilesetImage = function(tileset, key, tileWidth, tileHeight, tileMargin, tileSpacing, gid) {
+        const tilesetImage = originalTilemapAddTilesetImage.call(this, tileset, key, tileWidth, tileHeight, tileMargin, tileSpacing, gid);
+        tilesetImage.plus = new TilesetPlus(tilesetImage);
+        return tilesetImage;
     };
 
     const originalSpriteFactory = Phaser.GameObjectFactory.prototype.sprite;

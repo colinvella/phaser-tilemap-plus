@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
-import Vector from "../src/tilemap-plus/Vector";
-import ConvexPolygon from "../src/tilemap-plus/ConvexPolygon";
+import Vector from "../src/tilemap-plus/geometry/Vector";
+import ConvexPolygon from "../src/tilemap-plus/geometry/ConvexPolygon";
 
 describe("ConvexPolygon", () => {
     const epsilon = 0.001;

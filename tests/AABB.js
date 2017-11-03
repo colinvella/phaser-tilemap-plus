@@ -1,7 +1,7 @@
 import { expect } from "chai";
 
-import Vector from "../src/tilemap-plus/Vector";
-import AABB from "../src/tilemap-plus/AABB";
+import Vector from "../src/tilemap-plus/geometry/Vector";
+import AABB from "../src/tilemap-plus/geometry/AABB";
 
 describe("AABB", () => {
     beforeEach(() => {

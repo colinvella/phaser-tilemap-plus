@@ -126,7 +126,13 @@ var windEffect = layerProperties.wind;
 
 ## Tileset Custom Properties
 
-To do
+Tileset custom properties can be accessed as follows:
+
+```js
+// get loot probability from custom properties
+var tilesetProperties = tileset.plus.properties;
+var lootProbability = tilesetProperties.lootProbability;
+```
 
 # Object Layer Event Handling
 

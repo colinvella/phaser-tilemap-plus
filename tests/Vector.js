@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import Vector from "../src/tilemap-plus/Vector";
+import Vector from "../src/tilemap-plus/geometry/Vector";
 
 describe("Vector", () => {
     const epsilon = 0.001;

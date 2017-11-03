@@ -1,4 +1,4 @@
-import ConvexPolygon from "./ConvexPolygon";
+import ConvexPolygon from "./geometry/ConvexPolygon";
 
 export default class SpritePlus {
     constructor(sprite) {

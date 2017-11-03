@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-import Range from "../src/tilemap-plus/Range";
+import Range from "../src/tilemap-plus/geometry/Range";
 
 describe("Range", () => {
     let min, max, range, min2, max2, range2, point;

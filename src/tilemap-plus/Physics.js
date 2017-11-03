@@ -1,6 +1,6 @@
-import Vector from "./Vector";
-import ConvexPolygon from "./ConvexPolygon";
-import Range from "./Range";
+import Vector from "./geometry/Vector";
+import ConvexPolygon from "./geometry/ConvexPolygon";
+import Range from "./geometry/Range";
 
 export default class Physics {
     constructor(tilemapJson) {
