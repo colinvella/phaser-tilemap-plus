@@ -47,9 +47,11 @@ and include it after Phaser.
 <script src="phaser-tilemap-plus.js"></script>
 ```
 
-# Usage
+## Usage
 
-# Install Plugin
+For a complete working example, check out the source code for the [demo game](https://github.com/colinvella/phaser-tilemap-plus-demo).
+
+### Install Plugin
 Within the `create()` function or method of your game state, add the plugin to the Phaser framework. If you have multiple states, this can be done in your booting state.
 
 ```js
@@ -64,7 +66,7 @@ Load the tilemap and corresponding tilemap layers as you normally would. The plu
 
 *NOTE:* In general, the difference between ES5 and ES6 code is that in ES6, the `game` object is a property of the game state object and must be prefixed by `this`. The next examples will quote only ES5 code for the sake of brevity.
 
-# Enable Tile Animations
+### Enable Tile Animations
 If you have defined tile animations within Tiled prior to exporting the map to JSON format, you can enable them by adding the following code after adding the tilemap and corresponding tilemap layers in your `create()` function:
 
 ```js
@@ -75,7 +77,7 @@ game.tilemap.plus.animation.enable();
 
 Animations can be disabled by calling `tilemap.plus.animation.disable()`.
 
-# Enable Physics
+### Enable Physics
 You can add an object layer to your Tiled map and add polygons and rectangles to define collidable boundaries in your map, independently from the tiles used. This allows the use of sloped or curved floors, walls and ceilings, against which sprites can interact accordingly, such as sliding down. Object layer based collision also allows the implementation of hidden passages and platforms.
 
 ![image](https://user-images.githubusercontent.com/1244038/32300160-874d7096-bf58-11e7-9d22-d808a2b672b5.png)
@@ -99,12 +101,12 @@ make Sonic-style springs, you can assign a value higher than `1.0`.
 Whenever a sprite is touching the collision layer, its body will have `contactNormal` of type `Vector` indicating the direction away from the contact surfaces. This can be used to determine when and in what direction to jump off the surface. For example, a sprite is
 allowed to jump only when `sprite.body.contactNormal.y < 0`, that is, has a component pointing upwards.
 
-# Custom Properties
+### Custom Properties
 
 Tiled allows the level designer to define custom properties at the map, layer and tileset level, that can be used to define meta data such as the player's starting position, exit point, level effects and so on. 
 The plugin exposes these properties in the corresponding `tilemap`, `tilemapLayer`s and `tileset`s instanciated in the `create()` function of the game state.
 
-## Tilemap Custom Properties
+#### Tilemap Custom Properties
 
 Tilemap custom properties can be accessed as follows:
 
@@ -115,7 +117,7 @@ player.x = mapProperties.playerStartX;
 player.y = mapProperties.playerStartY;
 ```
 
-## Layer Custom Properties
+#### Layer Custom Properties
 
 Custom properties defined at the tilemap layer level can be accessed as follows:
 
@@ -126,7 +128,7 @@ var rainEffect = layerProperties.rain;
 var windEffect = layerProperties.wind;
 ```
 
-## Tileset Custom Properties
+#### Tileset Custom Properties
 
 Tileset custom properties can be accessed as follows:
 
@@ -136,6 +138,6 @@ var tilesetProperties = tileset.plus.properties;
 var lootProbability = tilesetProperties.lootProbability;
 ```
 
-# Object Layer Event Handling
+#### Object Layer Event Handling
 
 To do
