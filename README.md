@@ -49,7 +49,7 @@ and include it after Phaser.
 
 ## Usage
 
-For a complete working example, check out the source code for the [demo game](https://github.com/colinvella/phaser-tilemap-plus-demo).
+For a complete working example, check out the source code of the [demo game](https://github.com/colinvella/phaser-tilemap-plus-demo).
 
 ### Install Plugin
 Within the `create()` function or method of your game state, add the plugin to the Phaser framework. If you have multiple states, this can be done in your booting state.
@@ -138,6 +138,6 @@ var tilesetProperties = tileset.plus.properties;
 var lootProbability = tilesetProperties.lootProbability;
 ```
 
-#### Object Layer Event Handling
+### Object Layer Event Handling
 
 To do
