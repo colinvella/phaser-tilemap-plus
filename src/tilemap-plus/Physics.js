@@ -1,11 +1,14 @@
 import Vector from "./geometry/Vector";
 import ConvexPolygon from "./geometry/ConvexPolygon";
 import Range from "./geometry/Range";
+import AABB from "./geometry/AABB";
+import QuadTree from "./geometry/QuadTree";
 
 export default class Physics {
     constructor(tilemapJson) {
         this.tilemapJson = tilemapJson;
         this.shapes = [];
+        this.quadTree = new QuadTree([], 1, 1);
     }
 
     enableObjectLayer(objectLayerName) {
@@ -30,6 +33,7 @@ export default class Physics {
                 this.addRectangle(objectJson);
             }
         }
+        this.quadTree = new QuadTree(this.shapes, 5, 5);        
     }
 
     collideWith(sprite) {
@@ -45,7 +49,10 @@ export default class Physics {
         body.contactNormal.x = body.contactNormal.y = 0;
         let totalPenetration = new Vector();
         let bounce = 0;
-        for (const shape of this.shapes) {
+
+        const bodyAABB = new AABB(body.x - 1, body.y - 1, body.x + body.width + 1, body.y + body.height + 1);
+        const candidateShapes = this.quadTree.candidateShapes(bodyAABB);
+        for (const shape of candidateShapes) {
             const collision = shape.collideWidth(body);
             if (!collision) {
                 continue;
@@ -141,8 +148,8 @@ export default class Physics {
         for (const vertex of convexPolygon.vertices) {
             left = Math.min(left, vertex.x);
             top = Math.min(left, vertex.y);
-            right = Math.max(left, vertex.x);
-            bottom = Math.max(left, vertex.y);
+            right = Math.max(right, vertex.x);
+            bottom = Math.max(bottom, vertex.y);
         }
         
         const shape = {            

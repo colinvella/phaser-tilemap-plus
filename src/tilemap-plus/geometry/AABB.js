@@ -1,3 +1,5 @@
+import Vector from "./Vector";
+
 export default class AABB {
     constructor(left, top, right, bottom) {
         this.left = left === undefined ? Number.POSITIVE_INFINITY : left;
@@ -20,6 +22,10 @@ export default class AABB {
         return height >= 0 ? height : NaN;
     }
 
+    centre() {
+        return new Vector((this.left + this.right) * 0.5, (this.top + this.bottom) * 0.5);
+    }
+
     containsPoint(point) {
         return this.left <= point.x && point.x <= this.right
             && this.top <= point.y && point.y <= this.bottom;
@@ -35,15 +41,20 @@ export default class AABB {
     }
 
     intersects(aabb) {
-        return
+        const result =
             this.left <= aabb.right &&
             this.right >= aabb.left &&
             this.top <= aabb.bottom &&
             this.bottom >= aabb.top;
+        return result;
     }
 
     static fromPoints(points) {
-        let left, top, right, bottom;
+        let left = Number.POSITIVE_INFINITY,
+            top = Number.POSITIVE_INFINITY,
+            right = Number.NEGATIVE_INFINITY,
+            bottom = Number.NEGATIVE_INFINITY;
+
         if (Array.isArray(points)) {
             left = Math.min(...points.map(point => point.x));
             top = Math.min(...points.map(point => point.y));
@@ -55,6 +66,27 @@ export default class AABB {
             right = points.x;
             bottom = points.y;
         }
+        return new AABB(left, top, right, bottom);
+    }
+
+    static fromAABBs(aabbs) {
+        let left = Number.POSITIVE_INFINITY,
+            top = Number.POSITIVE_INFINITY,
+            right = Number.NEGATIVE_INFINITY,
+            bottom = Number.NEGATIVE_INFINITY;
+
+        if (Array.isArray(aabbs)) {
+            left = Math.min(...aabbs.map(aabb => aabb.left));
+            top = Math.min(...aabbs.map(aabb => aabb.top));
+            right = Math.max(...aabbs.map(aabb => aabb.right));
+            bottom = Math.max(...aabbs.map(aabb => aabb.bottom));
+        } else {
+            left = Math.min(left, aabb.left);
+            top = Math.min(top, aabb.top);
+            right = Math.max(right, aabb.right);
+            bottom = Math.max(bottom, aabb.bottom);
+        }
+
         return new AABB(left, top, right, bottom);
     }
 }

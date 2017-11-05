@@ -8,7 +8,7 @@ Check out the [demo](https://colinvella.github.io/phaser-tilemap-plus-demo/).
 
 This is a Phaser plugin that leverages the map editing capabilities of the [Tiled](http://www.mapeditor.org/) map editor. It allows the developer to selectively enable the following features:
 * tile animation
-* object layer based collision (for use with Arcade physics)
+* object layer based collision
 * custom properties
 * object layer based event handling (not yet implemented)
 
@@ -18,7 +18,7 @@ The plugin is designed to facilitate integration into existing code bases with m
 projects, but please bear in mind that the API is still in flux and future updates may introduce breaking changes.
 
 ## How It Works
-The plugin injects code into Phaser's loader mechanism to load the underlying Tiled JSON files in a separate cache key, extracting information currently ignored by the tilemap loader. It also injects a custom factory function to enhance the loaded tilemap object with additional functionality, such as animation, physiscs, custom properties and event handling.
+The plugin injects code into Phaser's loader mechanism to load the underlying Tiled JSON files in a separate cache key, extracting information currently ignored by the tilemap loader. It also injects a custom factory function to enhance the loaded tilemap object with additional functionality, such as animation, physics, custom properties and event handling.
 
 ## Installation
 ```shell
@@ -78,7 +78,10 @@ game.tilemap.plus.animation.enable();
 Animations can be disabled by calling `tilemap.plus.animation.disable()`.
 
 ### Enable Physics
-You can add an object layer to your Tiled map and add polygons and rectangles to define collidable boundaries in your map, independently from the tiles used. This allows the use of sloped or curved floors, walls and ceilings, against which sprites can interact accordingly, such as sliding down. Object layer based collision also allows the implementation of hidden passages and platforms.
+You can add an object layer to your Tiled map and add polygons and rectangles to define collidable boundaries in your map, independently from the tiles used. This allows the use of sloped or curved floors, walls and ceilings, against which sprites can interact accordingly, such as sliding down or bouncing accurately. Object layer-based collision also allows the implementation of hidden passages and platforms.
+
+The physics engine uses a fast quadtree-based broad phase collision detection, coupled with a separation axis
+theorem (SAT) implementation for the narrow phase collision detection on the polygon objects defined in the object layer. On initialisation, the physics engine decomposes all concave polygons into convex polygons, to allow use of SAT. 
 
 ![image](https://user-images.githubusercontent.com/1244038/32300160-874d7096-bf58-11e7-9d22-d808a2b672b5.png)
 
