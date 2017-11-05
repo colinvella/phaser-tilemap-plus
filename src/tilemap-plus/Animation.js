@@ -65,7 +65,7 @@ function _addAnimationsFromAnimatedTile(tilesetJson, animatedTileId, animationJs
 }
 
 function _animate() {
-    const deltaTime = this.time.elapsed;
+    const deltaTime = this.time.elapsedMS;
 
     let dirty = false;
     for (const tileAnimation of this.tileAnimations) {
