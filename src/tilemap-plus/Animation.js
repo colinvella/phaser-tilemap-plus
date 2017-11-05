@@ -1,4 +1,4 @@
-export default class TilemapPlusAnimation {
+export default class Animation {
     constructor(tilemapJson, time, tilemap) {
         this.tilemapJson = tilemapJson;
         this.time = time;
@@ -45,40 +45,45 @@ function _addAnimationsFromTileset(tilesetJson) {
 }
 
 function _addAnimationsFromAnimatedTile(tilesetJson, animatedTileId, animationJson) {
-    const tiles = animationJson.map(animationJson => animationJson.tileid);
+    const frames = animationJson.map(element => ({ tileId: element.tileid, duration: element.duration}));
+
+    if (frames.length === 0) {
+        return;
+    }
     
-    const frameInterval = animationJson.find(() => true).duration;
     const tileset = this.tilemap.tilesets.find(t => t.name === tilesetJson.name);
     
     const tileAnimation = {
-        tiles,
-        frameInterval,
+        frames,
         tileset,
         tileLocations: _getTileLocations.bind(this)(tileset.firstgid + parseInt(animatedTileId)),
         currentFrame: 0,
+        currentDuration: 0
     };        
 
     this.tileAnimations.push(tileAnimation);
 }
 
 function _animate() {
-    const currentTime = this.time.now;
+    const deltaTime = this.time.elapsed;
+
     let dirty = false;
     for (const tileAnimation of this.tileAnimations) {
-        const tiles = tileAnimation.tiles;
-        const frameInterval = tileAnimation.frameInterval;
+        const frames = tileAnimation.frames;
         const tileset = tileAnimation.tileset;
         const tileLocations = tileAnimation.tileLocations;
         const currentFrame = tileAnimation.currentFrame;
-        
-        const newFrame = Math.floor(currentTime / frameInterval) % tiles.length;
-        if (newFrame != currentFrame) {
-            const newFrameIndex = tileset.firstgid + tiles[newFrame];
+        const frameDuration = frames[currentFrame].duration;
+        tileAnimation.currentDuration += deltaTime;
+        if (tileAnimation.currentDuration > frameDuration) {
+            tileAnimation.currentDuration -= frameDuration;
+            tileAnimation.currentFrame = (currentFrame + 1) % frames.length;
+
+            const newFrameIndex = tileset.firstgid + frames[tileAnimation.currentFrame].tileId;
             for (const tileLocation of tileLocations) {
                 const tile = this.tilemap.getTile(tileLocation.x, tileLocation.y, tileLocation.layer, true);
                 tile.index = newFrameIndex;
             }
-            tileAnimation.currentFrame = newFrame;
             dirty = true;
         }
     }
