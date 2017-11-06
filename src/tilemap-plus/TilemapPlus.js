@@ -1,5 +1,6 @@
 import Animation from "./Animation";
 import Physics from "./Physics";
+import Events from "./events/Events";
 
 export default class TilemapPlus {
 
@@ -11,7 +12,8 @@ export default class TilemapPlus {
         this.tileAnimations = [];
         this.game = time.game;
         this.animation = new Animation(tilemapJson, time, tilemap);
-        this.physics = new Physics(tilemapJson);
+        this.events = new Events();
+        this.physics = new Physics(tilemapJson, this.events);
         this.properties = tilemapJson.properties || {};
     }    
 }

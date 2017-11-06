@@ -5,8 +5,9 @@ import AABB from "./geometry/AABB";
 import QuadTree from "./geometry/QuadTree";
 
 export default class Physics {
-    constructor(tilemapJson) {
+    constructor(tilemapJson, events) {
         this.tilemapJson = tilemapJson;
+        this.events = events;
         this.shapes = [];
         this.quadTree = new QuadTree([], 1, 1);
     }
@@ -52,6 +53,7 @@ export default class Physics {
 
         const bodyAABB = new AABB(body.x - 1, body.y - 1, body.x + body.width + 1, body.y + body.height + 1);
         const candidateShapes = this.quadTree.candidateShapes(bodyAABB);
+        const collidedShapes = [];
         for (const shape of candidateShapes) {
             const collision = shape.collideWidth(body);
             if (!collision) {
@@ -75,10 +77,13 @@ export default class Physics {
 
             // accumulate bounce
             const properties = shape.properties;
-            const shapeBounce = properties && properties.bounce;
+            const shapeBounce = properties.bounce;
             if (shapeBounce) {
                 bounce += shapeBounce;
             }
+
+            // track collided shapes for event notification
+            collidedShapes.push(shape);
         }
 
         // resolve penetration
@@ -105,6 +110,9 @@ export default class Physics {
 
         body.velocity.x = newVelocity.x;
         body.velocity.y = newVelocity.y;
+
+        // notify event system
+        this.events.collisions.notify(sprite, collidedShapes);
     }
 
     addRectangle(objectJson) {
@@ -125,7 +133,7 @@ export default class Physics {
             width: objectJson.width,
             height: objectJson.height,
             polygon: [{x: 0, y: 0}, widthVector, widthVector.plus(heightVector), heightVector],
-            properties: objectJson.properties
+            properties: objectJson.properties || {}
         };
         this.addPolygon(polygonJson);
     }
@@ -136,7 +144,7 @@ export default class Physics {
         );
         const convexPolygons = ConvexPolygon.generateConvexPolygons(vertices);
         for (const convexPolygon of convexPolygons) {
-            this.addConvexPolygon(convexPolygon, objectJson.properties);
+            this.addConvexPolygon(convexPolygon, objectJson.properties || {});
         }
     }
 
@@ -159,7 +167,7 @@ export default class Physics {
             right,
             bottom,
             polygon: convexPolygon,
-            properties: properties,
+            properties: properties || {},
             collideWidth: function(body) {
                 const sprite = body.sprite;
                 const spritePosition = new Vector(sprite.x, sprite.y);
