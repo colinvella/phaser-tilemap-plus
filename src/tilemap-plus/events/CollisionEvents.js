@@ -7,6 +7,7 @@ export default class CollisionEvents {
     add(sprite, listener) {
         const listeners = this.getSpriteListeners(sprite);
         listeners.push(listener);
+        return listener;
     }
 
     remove(sprite, listener) {

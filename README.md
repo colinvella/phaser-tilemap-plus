@@ -10,7 +10,7 @@ This is a Phaser plugin that leverages the map editing capabilities of the [Tile
 * tile animation
 * object layer based collision
 * custom properties
-* object layer based event handling (not yet implemented)
+* event handling (partially implemented)
 
 The plugin is designed to facilitate integration into existing code bases with minimal code changes.
 
@@ -141,6 +141,44 @@ var tilesetProperties = tileset.plus.properties;
 var lootProbability = tilesetProperties.lootProbability;
 ```
 
-### Object Layer Event Handling
+### Event Handling
 
-To do
+The event system allows event handlers, in the form of callback functions, to be hooked to specific events in the
+game, such as when a sprite collides with the tilemap's collision layer if enabled. It is also possible to set up
+a specific object layer, independent of the collision layer, to contain shapes that act as event triggers.
+
+#### Collision Events
+
+To listen to sprite against object layer collision events, listener functions can be mapped on a per sprite basis:
+
+```js
+// listen to player collisions against the tilemap
+var playerListener = tilemap.plus.events.collisions.add(player,
+  function(shape, oldVelocity, newVelocity, contactNormal) {
+    // if the tilemap has a strong bounce property, play spring sound
+    if (shape.properties.bounce > 1) {
+        springAudio.play();
+    }
+    // if the downward velocity lessened drastically, play thud sound
+    if (oldVelocity.y - newVelocity.y > 300) {
+        thudAudio.play();                
+    }
+  }
+);
+```
+
+The listener function is invoked whenever the sprite hits a shape from the collision layer. The function's
+parameters consist of the shape, the old (pre-collision) and new (post-collision) velocity vectors of the sprite and
+the contact normal vector (a vector of length 1 that points away at 90 degrees from the surface). These parameters
+can be used to apply behaviours and/or effects as needed.
+
+If a reference to a listener function is maintained, it can eventually be removed from the event system like this:
+
+```js
+// remove playerListener listener from player collision event list
+tilemap.plus.events.collisions.remove(player, playerListener);
+```
+
+#### Region Based Events
+
+To do.
