@@ -149,23 +149,14 @@ export default class Physics {
     }
 
     addConvexPolygon(convexPolygon, properties) {
-        let left = Number.POSITIVE_INFINITY;
-        let top = Number.POSITIVE_INFINITY;
-        let right = Number.NEGATIVE_INFINITY;
-        let bottom = Number.NEGATIVE_INFINITY;
-        for (const vertex of convexPolygon.vertices) {
-            left = Math.min(left, vertex.x);
-            top = Math.min(left, vertex.y);
-            right = Math.max(right, vertex.x);
-            bottom = Math.max(bottom, vertex.y);
-        }
-        
+        const aabb = convexPolygon.aabb;
+
         const shape = {            
             type: "polygon",
-            left,
-            top,
-            right,
-            bottom,
+            left: aabb.left,
+            top: aabb.top,
+            right: aabb.right,
+            bottom: aabb.bottom,
             polygon: convexPolygon,
             properties: properties || {},
             collideWidth: function(body) {
