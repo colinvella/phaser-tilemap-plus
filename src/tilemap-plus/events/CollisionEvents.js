@@ -14,7 +14,7 @@ export default class CollisionEvents {
         this.spriteListeners.set(sprite, listeners.filter(l => l != listener));
     }
 
-    notify(sprite, shapes, oldVelocity, newVelocity) {
+    notify(sprite, shapes, oldVelocity, newVelocity, contactNormal) {
         const prevShapes = this.spriteCollisions.has(sprite) ? this.spriteCollisions.get(sprite) : [];
         const newShapes = shapes.filter(shape =>
             !prevShapes.find(prevShape => prevShape === shape)
@@ -23,7 +23,7 @@ export default class CollisionEvents {
 
         for (const newShape of newShapes) {
             for (const listener of this.getSpriteListeners(sprite)) {
-                listener(newShape, oldVelocity, newVelocity);
+                listener(newShape, oldVelocity, newVelocity, contactNormal);
             }
         } 
     }

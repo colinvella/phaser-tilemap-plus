@@ -112,7 +112,7 @@ export default class Physics {
         body.velocity.y = newVelocity.y;
 
         // notify event system
-        this.events.collisions.notify(sprite, collidedShapes, velocity, newVelocity);
+        this.events.collisions.notify(sprite, collidedShapes, velocity, newVelocity, normal);
     }
 
     addRectangle(objectJson) {
