@@ -12,7 +12,7 @@ export default class TilemapPlus {
         this.tileAnimations = [];
         this.game = time.game;
         this.animation = new Animation(tilemapJson, time, tilemap);
-        this.events = new Events();
+        this.events = new Events(tilemapJson);
         this.physics = new Physics(tilemapJson, this.events);
         this.properties = tilemapJson.properties || {};
     }    
