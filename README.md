@@ -181,4 +181,55 @@ tilemap.plus.events.collisions.remove(player, playerListener);
 
 #### Region Based Events
 
-To do.
+Just as Tiled's object layers can be used to define physical boundaries within the map, they can also be used to
+define event triggering regions, using a separate object layer dedicated for this purpose. Events can be set up
+for any given sprite entering and/or leaving a region (a polygon or rectangle shape) in the object layer. This
+is useful for setting up area-specific effects, trigger enemy spawning, set save points and so on.
+
+To enable a specific object layer to handle region events, add the following code in the `create()` function:
+
+```js
+// enable region events using object layer named "Events"
+tilemap.plus.events.regions.enableObjectLayer("Events");
+```
+
+After enabling region evemts, bind an `onEnter` listener function to a sprite:
+
+```js
+// simulate entering a poorly lit area if region has custom property isDark = true
+var playerInside = tilemap.plus.events.regions.onEnterAdd(player, function(region) {
+  if (region.properties.isDark) {
+    // tween dark mask sprite to 50% alpha
+    game.add.tween(lightSprite).to( { alpha: 0.5 }, 250, "Linear", true);
+  }
+});
+```
+
+An `onLeave` listener can be bound to a sprite in a similar way:
+
+```js
+// simulate leaving a poorly lit area
+var playerOutside = tilemap.plus.events.regions.onLeaveAdd(player, function(region) {
+  if (region.properties.isDark) {
+    // tween dark mask sprite to transparent
+    game.add.tween(lightSprite).to( { alpha: 0.0 }, 250, "Linear", true);
+  }
+});
+```
+
+To process region events, the `triggerWith(...)` function must be called for every frame by
+invoking it from within the `update()` function:
+
+```js
+// trigger region events against player sprite
+tilemap.plus.events.regions.triggerWith(player);
+```
+
+Finally, listeners can be unbound from a sprite using the `onEnterRemove(..)` and
+`onLeaveRemove` functions, provided references to the listener functions are kept:
+
+```js
+// unhook enter and leave listeners from player sprite
+tilemap.plus.events.regions.onEnterRemove(player, playerInside);
+tilemap.plus.events.regions.onLeaveRemove(player, playerOutside);
+```
