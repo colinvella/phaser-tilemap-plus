@@ -19,7 +19,8 @@ export default class ShapeLayer {
             } else if (objectJson.gid) {
                 // ignore tile
             } else if (objectJson.text) {
-                // ignore text
+                // treat text as rectangle
+                this.addRectangle(objectJson);
             } else { // rectangle
                 this.addRectangle(objectJson);
             }
