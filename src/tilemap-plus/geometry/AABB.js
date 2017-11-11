@@ -49,6 +49,15 @@ export default class AABB {
         return result;
     }
 
+    translated(offset) {
+        return new AABB(
+            this.left + offset.x,
+            this.top + offset.y,
+            this.right + offset.x,
+            this.bottom + offset.y
+        );
+    }
+
     static fromPoints(points) {
         let left = Number.POSITIVE_INFINITY,
             top = Number.POSITIVE_INFINITY,

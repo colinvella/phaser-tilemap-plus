@@ -49,10 +49,41 @@ export default class Physics {
             const penetration = collision.penetration;
             const normal = collision.normal;
 
-            // if moving away, no resitution to compute
+            // if moving away, no restitution to compute
             const speedNormal = velocity.dot(normal);
             if (speedNormal >= 0) {
                 continue;
+            }
+
+            const shapeProperties = shape.properties;
+
+            // handle one way collisions e.g. for pass-through platforms
+            const collideOnly = shapeProperties.collideOnly;
+            if (collideOnly) {    
+                if (collideOnly === "down") {
+                    if (velocity.y < 0 || collision.normal.y > 0) {
+                        continue;
+                    }    
+                    const foo = 1;
+                }    
+                if (collideOnly === "up") {
+                    if (velocity.y > 0 || collision.normal.y < 0) {
+                        continue;
+                    }    
+                    const foo = 1;
+                }    
+                if (collideOnly === "right") {
+                    if (velocity.x < 0 || collision.normal.x > 0) {
+                        continue;
+                    }    
+                    const foo = 1;
+                }    
+                if (collideOnly === "left") {
+                    if (velocity.x > 0 || collision.normal.x < 0) {
+                        continue;
+                    }    
+                    const foo = 1;
+                }    
             }
             
             // accumulate normal from multiple shapes
@@ -62,8 +93,7 @@ export default class Physics {
             totalPenetration = totalPenetration.plus(penetration);
 
             // accumulate bounce
-            const properties = shape.properties;
-            const shapeBounce = properties.bounce;
+            const shapeBounce = shapeProperties.bounce;
             if (shapeBounce) {
                 bounce += shapeBounce;
             }
