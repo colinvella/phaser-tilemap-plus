@@ -14,13 +14,10 @@ This is a Phaser plugin that leverages the map editing capabilities of the [Tile
 
 The plugin is designed to facilitate integration into existing code bases with minimal code changes.
 
-*NOTE:* This plugin is a work in progress in early development stage. Feel free to try it out or even integrate it in your
-projects, but please bear in mind that the API is still in flux and future updates may introduce breaking changes.
-
-## How It Works
+### How It Works
 The plugin injects code into Phaser's loader mechanism to load the underlying Tiled JSON files in a separate cache key, extracting information currently ignored by the tilemap loader. It also injects a custom factory function to enhance the loaded tilemap object with additional functionality, such as animation, physics, custom properties and event handling.
 
-## Installation
+## Installation :hammer:
 ```shell
 npm install phaser-tilemap-plus -S
 ```
@@ -47,7 +44,7 @@ and include it after Phaser.
 <script src="phaser-tilemap-plus.js"></script>
 ```
 
-## Usage
+## Usage :book:
 
 For a complete working example, check out the source code of the [demo game](https://github.com/colinvella/phaser-tilemap-plus-demo).
 
@@ -95,14 +92,28 @@ To collide sprites against the map, call the following in your `update()` method
 game.tilemap.plus.physics.collideWith(sprite);
 ```
 
+#### Surface Interaction
+
+Whenever a sprite is touching the collision layer, its body will have `contactNormal` of type `Vector` indicating the direction away from the contact surfaces. This can be used to determine when and in what direction to jump off the surface. For example, a sprite is
+allowed to jump only when `sprite.body.contactNormal.y < 0`, that is, has a component pointing upwards.
+
+#### Surface Rebound
+
 To make sprites rebound off surfaces, add a `bounce` custom property to an object in the object layer, with a value that is a fraction
 of the rebound velocity. For example. if you want a sprite to bounce back with half the incoming velocity, set `bounce` to `0.5`. To
 make Sonic-style springs, you can assign a value higher than `1.0`.
 
 <p align="center"><img src="https://user-images.githubusercontent.com/1244038/32395807-f74aa41e-c0e2-11e7-90cf-5f7e882fb724.gif" alt="phaser-tilemap-plus physics bounce"></p>
 
-Whenever a sprite is touching the collision layer, its body will have `contactNormal` of type `Vector` indicating the direction away from the contact surfaces. This can be used to determine when and in what direction to jump off the surface. For example, a sprite is
-allowed to jump only when `sprite.body.contactNormal.y < 0`, that is, has a component pointing upwards.
+#### One Way Platforms
+
+Many games implement platforms that the player can jump on from underneath. To implement a platform
+with this behaviour, add a custom property `collideOnly = down` to the platform's shape in the object layer.
+This will cause the physics engine to ignore collisions where the sprite's velocity doesn't have a downward
+component, effectively allowing the sprite to pass through the platform from underneath.
+
+In a similar manner, it is possible to make passthrough ceilings that impede upward motion by setting `collideOnly = up`. One way walls or entrances can similarly be implemented by setting `collideOnly = right` or
+`collideOnly = left`.
 
 ### Custom Properties
 
@@ -233,3 +244,19 @@ Finally, listeners can be unbound from a sprite using the `onEnterRemove(..)` an
 tilemap.plus.events.regions.onEnterRemove(player, playerInside);
 tilemap.plus.events.regions.onLeaveRemove(player, playerOutside);
 ```
+
+## Further Information :point_left:
+
+If you find bugs within the plugin or need help to incorporate it in your game, please raise an
+[issue](https://github.com/colinvella/phaser-tilemap-plus/issues/new) on
+[GitHub](https://github.com/colinvella/phaser-tilemap-plus). I will try to help you out as best
+as I can.
+
+## Thanks :heart:
+
+A thank you note for those who made this plugin possible:
+
+- [Richard Davey](https://twitter.com/photonstorm) - for Phaser :rocket:
+- [Stefan Hedman (schteppe)](https://github.com/schteppe) - for the manual port of [Poly Decomp](https://github.com/schteppe/poly-decomp.js) by Mark Bayazit :bookmark_tabs:
+- [Chris Andrew (@hexus)](https://github.com/hexus) - for the [phaser-arcade-slopes](https://github.com/hexus/phaser-arcade-slopes) library :triangular_ruler:, which was the source of inspiration for *phaser-arcade-plus* :thumbsup:
+

@@ -46,7 +46,6 @@ export default class Physics {
                 continue;
             }
 
-
             // if moving away, no restitution to compute
             const normal = collision.normal;
             const speedNormal = velocity.dot(normal);
@@ -55,39 +54,40 @@ export default class Physics {
             }
 
             const penetration = collision.penetration;
+
+            // detect entry into shape from previous position
+            const delta = new Vector(body.x - body.prev.x, body.y - body.prev.y);
+            const outsideDelta = delta.minus(penetration);
+            const wasOutside = outsideDelta.dot(normal) >= -1; 
+            if (!wasOutside) {
+                continue;
+            }
             
             const shapeProperties = shape.properties;
 
             // handle one way collisions e.g. for pass-through platforms
             const collideOnly = shapeProperties.collideOnly;
             if (collideOnly) {
-                const delta = new Vector(body.x - body.prev.x, body.y - body.prev.y);
-                const outsideDelta = delta.minus(penetration);
-                const wasOutside = outsideDelta.dot(normal) >= -1; 
 
                 if (collideOnly === "down") {
-                    if (velocity.y < 0 || normal.y >= 0 || !wasOutside) {
+                    if (velocity.y < 0 || normal.y >= 0) {
                         continue;
                     }    
-                    const foo = 1;
                 }    
                 if (collideOnly === "up") {
-                    if (velocity.y > 0 || normal.y <= 0 || !wasOutside) {
+                    if (velocity.y > 0 || normal.y <= 0) {
                         continue;
                     }    
-                    const foo = 1;
                 }    
                 if (collideOnly === "right") {
-                    if (velocity.x < 0 || normal.x >= 0 || !wasOutside) {
+                    if (velocity.x < 0 || normal.x >= 0) {
                         continue;
                     }    
-                    const foo = 1;
                 }    
                 if (collideOnly === "left") {
-                    if (velocity.x > 0 || normal.x <= 0 || !wasOutside) {
+                    if (velocity.x > 0 || normal.x <= 0) {
                         continue;
                     }    
-                    const foo = 1;
                 }    
             }
 
