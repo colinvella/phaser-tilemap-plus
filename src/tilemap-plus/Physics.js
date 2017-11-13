@@ -46,45 +46,51 @@ export default class Physics {
                 continue;
             }
 
-            const penetration = collision.penetration;
-            const normal = collision.normal;
 
             // if moving away, no restitution to compute
+            const normal = collision.normal;
             const speedNormal = velocity.dot(normal);
             if (speedNormal >= 0) {
                 continue;
             }
 
+            const penetration = collision.penetration;
+            
             const shapeProperties = shape.properties;
 
             // handle one way collisions e.g. for pass-through platforms
             const collideOnly = shapeProperties.collideOnly;
-            if (collideOnly) {    
+            if (collideOnly) {
+                const delta = new Vector(body.x - body.prev.x, body.y - body.prev.y);
+                const outsideDelta = delta.minus(penetration);
+                const wasOutside = outsideDelta.dot(normal) >= -1; 
+
                 if (collideOnly === "down") {
-                    if (velocity.y < 0 || collision.normal.y > 0) {
+                    if (velocity.y < 0 || normal.y >= 0 || !wasOutside) {
                         continue;
                     }    
                     const foo = 1;
                 }    
                 if (collideOnly === "up") {
-                    if (velocity.y > 0 || collision.normal.y < 0) {
+                    if (velocity.y > 0 || normal.y <= 0 || !wasOutside) {
                         continue;
                     }    
                     const foo = 1;
                 }    
                 if (collideOnly === "right") {
-                    if (velocity.x < 0 || collision.normal.x > 0) {
+                    if (velocity.x < 0 || normal.x >= 0 || !wasOutside) {
                         continue;
                     }    
                     const foo = 1;
                 }    
                 if (collideOnly === "left") {
-                    if (velocity.x > 0 || collision.normal.x < 0) {
+                    if (velocity.x > 0 || normal.x <= 0 || !wasOutside) {
                         continue;
                     }    
                     const foo = 1;
                 }    
             }
+
             
             // accumulate normal from multiple shapes
             body.contactNormal = body.contactNormal.plus(normal);
