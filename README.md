@@ -1,16 +1,16 @@
 # phaser-tilemap-plus [![Build Status](https://travis-ci.org/colinvella/phaser-tilemap-plus.svg?branch=master)](https://travis-ci.org/colinvella/phaser-tilemap-plus)
 
-Tilemap animations, physics, events and custom property enhancements for Tiled JSON map files within the [Phaser](http://phaser.io) game framework
+A [Phaser](http://phaser.io) game framework plugin that implements tile animation, sloped tile physics, events and custom property enhancements for tilemaps loaded from [Tiled](http://www.mapeditor.org) JSON map files within the [Phaser](http://phaser.io) game framework.
 
-Check out the [demo](https://colinvella.github.io/phaser-tilemap-plus-demo/).
+**Check out the interactive [demo](https://colinvella.github.io/phaser-tilemap-plus-demo/)**. :video_game:
 
 ![phaser-tilemap-plus-demo](https://user-images.githubusercontent.com/1244038/32296653-17530fd6-bf4d-11e7-80f2-c2d82bbed151.gif)
 
-This is a Phaser plugin that leverages the map editing capabilities of the [Tiled](http://www.mapeditor.org/) map editor. It allows the developer to selectively enable the following features:
-* tile animation
-* object layer based collision
-* custom properties
-* event handling (partially implemented)
+This is a Phaser plugin that leverages the map editing capabilities of the [Tiled](http://www.mapeditor.org) map editor. It allows the developer to selectively enable the following features:
+* tile animation as defined in the [Tiled](http://www.mapeditor.org) map editor
+* object layer based collision with support for sloped and curved tiles
+* custom properties for tilemaps, tilesets and layers
+* event handling for sprite to map collisions and region-triggered events
 
 The plugin is designed to facilitate integration into existing code bases with minimal code changes.
 
