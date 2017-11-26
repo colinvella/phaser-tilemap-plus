@@ -113,12 +113,12 @@ export default class Physics {
         body.y -= totalPenetration.y;
                 
         body.contactNormal = body.contactNormal.normalized();
-        const normal = body.contactNormal;
+        const contactNormal = body.contactNormal;
 
-        const speedNormal = velocity.dot(normal);        
+        const speedNormal = velocity.dot(contactNormal);        
             
         // decompose old velocity into normal and tangent components
-        const velocityNormal = normal.scale(speedNormal);
+        const velocityNormal = contactNormal.scale(speedNormal);
         const velocityTangent = velocity.minus(velocityNormal);
 
         // compute restitution on normal component
@@ -133,7 +133,19 @@ export default class Physics {
         body.velocity.x = newVelocity.x;
         body.velocity.y = newVelocity.y;
 
+        this.updateBlocked(sprite, contactNormal);
+
         // notify event system
-        this.events.collisions.notify(sprite, collidedShapes, velocity, newVelocity, normal);
+        this.events.collisions.notify(sprite, collidedShapes, velocity, newVelocity, contactNormal);
+    }
+
+    updateBlocked (sprite, contactNormal) {
+        const body = sprite.body;
+
+        body.blocked.up    = body.blocked.up    || contactNormal.y > 0;
+        body.blocked.down  = body.blocked.down  || contactNormal.y < 0;
+        body.blocked.left  = body.blocked.left  || contactNormal.x > 0;
+        body.blocked.right = body.blocked.right || contactNormal.x < 0;
+        body.blocked.none  = contactNormal.x == 0 && contactNormal.y == 0;
     }
 }
