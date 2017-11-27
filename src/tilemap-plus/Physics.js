@@ -30,10 +30,17 @@ export default class Physics {
         const gravityNormal = gravityVector.normalized();
         const velocity = new Vector(body.velocity.x, body.velocity.y);
         
-        if (!body.contactNormal) {
-            body.contactNormal = new Vector();            
+        if (!body.plus) {
+            body.plus = {};
         }
-        body.contactNormal.x = body.contactNormal.y = 0;
+        const plus = body.plus;
+        plus.contactNormals = [];
+        plus.penetrations = [];
+        
+        if (!plus.contactNormal) {
+            plus.contactNormal = new Vector();            
+        }
+        plus.contactNormal.x = plus.contactNormal.y = 0;
         let totalPenetration = new Vector();
         let bounce = 0;
 
@@ -90,13 +97,14 @@ export default class Physics {
                     }    
                 }    
             }
-
             
             // accumulate normal from multiple shapes
-            body.contactNormal = body.contactNormal.plus(normal);
+            plus.contactNormal = plus.contactNormal.plus(normal);
+            plus.contactNormals.push(normal);
 
             // accumulate penetration
             totalPenetration = totalPenetration.plus(penetration);
+            plus.penetrations.push(penetration);
 
             // accumulate bounce
             const shapeBounce = shapeProperties.bounce;
@@ -112,8 +120,8 @@ export default class Physics {
         body.x -= totalPenetration.x;
         body.y -= totalPenetration.y;
                 
-        body.contactNormal = body.contactNormal.normalized();
-        const contactNormal = body.contactNormal;
+        plus.contactNormal = plus.contactNormal.normalized();
+        const contactNormal = plus.contactNormal;
 
         const speedNormal = velocity.dot(contactNormal);        
             
@@ -133,14 +141,15 @@ export default class Physics {
         body.velocity.x = newVelocity.x;
         body.velocity.y = newVelocity.y;
 
-        this.updateBlocked(sprite, contactNormal);
+        this.updateBlocked(sprite);
 
         // notify event system
         this.events.collisions.notify(sprite, collidedShapes, velocity, newVelocity, contactNormal);
     }
 
-    updateBlocked (sprite, contactNormal) {
+    updateBlocked (sprite) {
         const body = sprite.body;
+        const contactNormal = body.plus.contactNormal;
 
         body.blocked.up    = body.blocked.up    || contactNormal.y > 0;
         body.blocked.down  = body.blocked.down  || contactNormal.y < 0;

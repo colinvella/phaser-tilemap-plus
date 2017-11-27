@@ -94,8 +94,14 @@ game.tilemap.plus.physics.collideWith(sprite);
 
 #### Surface Interaction
 
-Whenever a sprite is touching the collision layer, its body will have `contactNormal` of type `Vector` indicating the direction away from the contact surfaces. This can be used to determine when and in what direction to jump off the surface. For example, a sprite is
-allowed to jump only when `sprite.body.contactNormal.y < 0`, that is, has a component pointing upwards.
+Whenever a sprite is touching the collision layer, its body will have a `plus` object attached with a number of collision related properties:
+
+* `contactNormal`: a value of type `Vector` indicating the overall direction away from the contact surfaces. The contact normal is a unit vector (a vector of length 1.0)
+* `contactNormals`: an array of `Vector` types containing contact normals for every contact surface
+* `penetration`: a value of type `Vector` indicating the overall penetration into the contact surfaces. This is used by the physics engine to correct the sprite's position after it penetrates the tile map
+* `penetrations`: an array of `Vector` types containing penetration vectors for every contact surface. The sum of these vectors equals the value of `penetration`
+
+ These properties can be used to determine when and in what direction to jump off the surface. For example, a sprite is allowed to jump only when `sprite.body.plus.contactNormal.y < 0`, that is has a component pointing upwards.
 
 #### Surface Rebound
 
