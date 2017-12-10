@@ -14,8 +14,14 @@ This is a Phaser plugin that leverages the map editing capabilities of the [Tile
 
 The plugin is designed to facilitate integration into existing code bases with minimal code changes.
 
-### How It Works
+## How It Works
 The plugin injects code into Phaser's loader mechanism to load the underlying Tiled JSON files in a separate cache key, extracting information currently ignored by the tilemap loader. It also injects a custom factory function to enhance the loaded tilemap object with additional functionality, such as animation, physics, custom properties and event handling.
+
+## Supported Formats
+When exporting a Tiled map to JSON format for use with the library, make sure to set one of the following formats in Maps > Properties > Tile Layer Format:
+* XML
+* Base 64 Uncompressed
+* CSV
 
 ## Installation :hammer:
 ```shell
